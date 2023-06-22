@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deploy
+  labels: 
+    app: flask-ping
+spec:
+  selector:
+    matchLabels:
+      app: flask-ping
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: flask-ping
+    spec:
+      containers:
+      - name: ping-pong
+        imagePullPolicy: Never 
+        image: ping-pong:latest
+        resources:
+        ports:
+        - containerPort: 5005
