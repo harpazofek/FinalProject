@@ -1,0 +1,10 @@
+- name: Cron job for replacing replicas
+  hosts: <jenkins_server> # Should be changed according to the real server host
+  tasks:
+    - name: Add replicas
+      shell: kubectl scale deployment <my-deployment> --replicas=2 # Should be changed to the appropriate deployment name
+      when: ansible_date_time.hour == 8
+
+    - name: Delete replicas
+      shell: kubectl scale deployment <my-deployment> --replicas=0 # Should be changed to the appropriate deployment name
+      when: ansible_date_time.hour == 13

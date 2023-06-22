@@ -1,0 +1,9 @@
+- name: Run cron job playbook on Jenkins server
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Run cron job playbook
+      ansible_connection: local
+      ansible_playbook:
+        inventory: inventory.ini
+        playbook: cron_job.yml
