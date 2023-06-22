@@ -6,17 +6,21 @@ app = Flask(__name__)
 
 
 @app.route('/ping', methods=['GET', 'POST'])
-def entities():
+def ping():
     if request.method == "GET":
         return {
-            'message': 'This endpoint should return a list of entities',
-            'method': request.method
+            'message': 'This endpoint should return a list of entities' ,
+            'method': request.method ,
+            'body': request.json ,
+            'path': request.path ,
+            'URL':  request.host_url 
+
         }
     if request.method == "POST":
         return {
             'message': 'This endpoint should create an entity',
             'method': request.method,
-		'body': request.json
+		    'body': request.json
         }
 
 

@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  server:
+    container_name: server
+    image: ping-pong:latest
+    build: 
+      dockerfile: Dockerfile
+    ports:
+      - "5005:5000"
+    environment: 
+      - NGINX_HOST=http://127.0.0.1:8081
+    command: ["main:app", "--host", "0.0.0.0", "--port", "5005", "--reload"]
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - 8081:8081
+
+  

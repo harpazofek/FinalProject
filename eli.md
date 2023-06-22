@@ -32,3 +32,11 @@ to run ----
 export FLASK_APP=main.py
 export FLASK_ENV=development
 flask run    
+
+curl -X GET -H "Content-Type: application/json" -d '{"ping": "pong"}' http://localhost:5005/ping/
+
+
+local test 
+python3 -m flask --app main run
+
+
