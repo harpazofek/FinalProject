@@ -3,10 +3,9 @@ kind: Service
 metadata:
   name: pp-service
 spec:
-  type: ????
-  selector: # must to include the lable of the pod!
-    name: ping-pod
+  selector: # must include the label of the pod!
+    name: pp-pod
   ports:
   - port: 5000 # internal port
     targetPort: 5005 # container port
-    nodePort: 31311 # expose
+    # nodePort: 31311 # expose
