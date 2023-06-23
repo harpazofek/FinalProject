@@ -7,6 +7,6 @@ spec:
   selector: # must to include the lable of the pod!
     name: ping-pod
   ports:
-  - port: 4000 # internal port
-    targetPort: 3000 # container port
+  - port: 5000 # internal port
+    targetPort: 5005 # container port
     nodePort: 31311 # expose
