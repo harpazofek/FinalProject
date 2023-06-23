@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ping-pong-deployment
+  lable:
+    app: pp-app
+spec:
+  selector:
+    matchLabels:
+      app: pp-app
+  template:
+    metadata:
+      name: pp-pod
+      labels:
+        app: pp-app
+    spec:
+      containers:
+      - name: pp-container
+        image: ping-pong:v1
+        resources:
+          # limits:
+          #   memory: "128Mi"
+          #   cpu: "500m"
+        ports:
+        - containerPort: 3000
