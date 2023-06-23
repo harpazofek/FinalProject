@@ -8,5 +8,5 @@ spec:
     app: flask-ping
   ports:
   - port: 4000
-    targetPort: 5005
+    targetPort: 5000
     nodePort: 32005

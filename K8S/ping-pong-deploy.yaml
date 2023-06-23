@@ -20,4 +20,4 @@ spec:
         image: ping-pong:latest
         resources:
         ports:
-        - containerPort: 5005
+        - containerPort: 5000
