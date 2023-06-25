@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stud-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: stud
+  template:
+    metadata:
+      labels:
+        app: stud
+    spec:
+      containers:
+      - name: stud-container
+        image: student:v2
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5200
