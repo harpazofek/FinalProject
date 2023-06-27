@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: stud-deployment
+  name: pingpong-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: stud
+      app: pipo
   template:
     metadata:
       labels:
-        app: stud
+        app: pipo
     spec:
       containers:
-      - name: stud-container
-        image: student:v2
+      - name: pipo-container
+        image: pingpong:v2
         resources:
           limits:
             memory: "128Mi"
