@@ -2,27 +2,30 @@
 from flask import Flask, request
 
 # main.py
-app = Flask(__name__)
+app = Flask(FlaskApp)
 
 
 @app.route('/ping', methods=['GET', 'POST'])
+
 def ping():
     if request.method == "GET":
+	request.environ.get('UserIP', request.remote_addr)   
         return {
-            'message': 'This endpoint should return a list of entities' ,
+            'message': 'Pong' ,
             'method': request.method ,
-            'body': request.json ,
-            'path': request.path ,
-            'URL':  request.host_url 
+	    'message': UserIP ,
+	    'body': request.json
 
         }
     if request.method == "POST":
+	request.environ.get('UserIP', request.remote_addr)   
         return {
-            'message': 'This endpoint should create an entity',
+            'message': 'Pong',
+	    'message': UserIP ,
             'method': request.method,
-		    'body': request.json
+	    'body': request.json
         }
 
 
-if __name__ == '__main__':
+if FlaskApp == 'FlaskApp':
     app.run(host='0.0.0.0')
