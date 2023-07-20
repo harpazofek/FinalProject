@@ -17,3 +17,13 @@ THE INSTANCE SHOULD BE A DEPLOYMENT WITH A 4 REPLICAS
 USING ANSIBILE BUILD A CRON JOB IN JENKINS TO ADD 2 REPLICAS AT
 
 8:‎00 AND DELETE 2 REPLICAS AT 13:00
+
+
+
+CS:
+1. For run the docker file in debuge mode:
+    python3 -m flask --app IMAGE:VER run
+2. to run the k8s type:
+minikube image load IMAGE:VER
+3. check if the image load succsesfuly 
+minikube image ls
