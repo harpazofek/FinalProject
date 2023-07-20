@@ -4,7 +4,7 @@ app = Flask(__name__)
 @app.route('/ping', methods=['GET'])
 @app.route('/pong', methods=['POST'])
 
-def getstudents():
+def pingpongfun():
     if request.method == 'GET':
         return '<h1> Ofek say\'s P1NG</h1>'
     if request.method == 'POST':
