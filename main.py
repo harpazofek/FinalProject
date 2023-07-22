@@ -5,23 +5,25 @@ from flask import Flask, request
 app = Flask(__name__)
 
 
-@app.route('/ping', methods=['GET', 'POST'])
+@app.route('/ping', methods=['GET'])
 def ping():
     if request.method == "GET":
-        return {
-            'message': 'This endpoint should return a list of entities' ,
-            'method': request.method ,
-            'body': request.json ,
-            'path': request.path ,
-            'URL':  request.host_url 
+        return f'<H2> Method GET, you have pinged successfuly   <br><br> Have a nice DAY and pong to you <H2> \
+                URL: {request.host_url}ping'  
+        # {
+        #     'message': 'This endpoint should return a list of entities' ,
+        #     'method': request.method ,
+        #     'body': request.json ,
+        #     'path': request.path ,
+        #     'URL':  request.host_url 
 
-        }
+
+@app.route('/pong', methods=['POST'])
+def pong():
     if request.method == "POST":
-        return {
-            'message': 'This endpoint should create an entity',
-            'method': request.method,
-		    'body': request.json
-        }
+        return f'<H2> Method POST, you have pinged successfuly  <br><br> Have a nice DAY <H2> \
+               URL: {request.host_url}pong'  
+
 
 
 if __name__ == '__main__':
