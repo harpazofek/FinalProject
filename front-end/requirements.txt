@@ -1,8 +1,6 @@
-pip==23.2.1
-ansible
 flask
 pymongo
 requests
 uuid
 jsonschema
-openssh-server
+pip==23.2.1

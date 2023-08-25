@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  ansible-service:
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    ports:
+      - "5220:5220"  # Map host port 5220 to container port 5220
+
+  python-service:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    ports:
+      - "5200:5200"  # Map host port 5200 to container port 5200
+
+  database-service:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: 1234!
+    ports:
+      - "27017:27017"  # Map host port 27017 to container port 27017
