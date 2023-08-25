@@ -13,3 +13,13 @@
 4 - THE INSTANCE SHOULD BE A DEPLOYMENT WITH A 4 REPLICAS
     USING ANSIBILE BUILD A CRON JOB IN JENKINS TO ADD 2 REPLICAS AT
     8:00 AND DELETE 2 REPLICAS AT 13:00
+
+asuming 
+NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/server-deploy   4/4     4            4           8m50s
+
+add 2 replicas
+kubectl scale --current-replicas=4 --replicas=2 deployment.apps/server-deploy
+
+remove 2 replicas
+kubectl scale --current-replicas=2 --replicas=4 deployment.apps/server-deploy
