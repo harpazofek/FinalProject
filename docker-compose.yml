@@ -1,15 +1,19 @@
 version: '3.8'
 services:
-  ansible-service:
+  jenkins-service:
     build:
-      context: ./back-end
-      dockerfile: Dockerfile
+      context: ./jenkins # Path to the directory containing your Dockerfile
     ports:
-      - "5220:5220"  # Map host port 5220 to container port 5220
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - mynetwork
 
   python-service:
     build:
-      context: ./front-end
+      context: ./ping-pong-app
       dockerfile: Dockerfile
     ports:
       - "5200:5200"  # Map host port 5200 to container port 5200
@@ -21,3 +25,12 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 1234!
     ports:
       - "27017:27017"  # Map host port 27017 to container port 27017
+    volumes:
+      - mongo-data:/data/db
+
+networks:
+  mynetwork:
+
+volumes:
+  mongo-data:
+  jenkins_home:

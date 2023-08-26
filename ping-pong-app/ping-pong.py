@@ -2,6 +2,15 @@ import os
 import logging
 from pymongo import MongoClient
 from flask import Flask, request, jsonify
+from logging.handlers import RotatingFileHandler
+from logconfig import setup_logging
+
+# Set up logging
+setup_logging()
+
+def main():
+    app.run(host="0.0.0.0", port=5200, debug=True)
+
 
 app = Flask(__name__)
 
@@ -11,6 +20,7 @@ MONGO_PASSWORD = os.getenv("MONGO_INITDB_ROOT_PASSWORD")
 
 # Configure the MongoDB connection
 client = MongoClient(f"mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@database-service:27017/")
+logging.info(client)
 
 # Access a specific database
 db = client["request_db"]
@@ -19,11 +29,10 @@ collection = db["requests"]
 def testdb():
     try:
         client.command('ismaster')
+        logging.debug(client)
     except:
         return "Server not available"
     return "Hello from the MongoDB client!\n"
-
-@app.route('/save_request', methods=['POST', 'GET'])
 
 def save_request():
     try:
@@ -41,23 +50,16 @@ def save_request():
         return jsonify({"message": "Request saved", "request_id": str(result.inserted_id)}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
-# Set up logging
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = app.logger
 
 @app.route('/ping', methods=['GET'])
 @app.route('/pong', methods=['POST'])
+@app.route('/save_request', methods=['POST', 'GET'])
 
 def pingpongfun():
     if request.method == 'GET':
         return '<h1> Ofek say\'s P1NG</h1>'
     if request.method == 'POST':
         return '<h1> Ofek say\'s P0NG</h1>'
-
-def main():
-    app.run(host="0.0.0.0", port=5200, debug=True)
 
 
 if __name__ == '__main__':
