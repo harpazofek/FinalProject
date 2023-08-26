@@ -28,8 +28,7 @@ kubectl scale --current-replicas=2 --replicas=4 deployment.apps/server-deploy
 
 if the number of replicas is unknowen  and you want 6 replicas
 run the foloing command 
-  kubectl scale --current-replicas=$(kubectl describe deployments server-deploy | grep desired | awk '{print $2}' | head -n1) --replicas=6 deployment.app
-s/server-deploy
+  kubectl scale --current-replicas=$(kubectl describe deployments server-deploy | grep desired | awk '{print $2}' | head -n1) --replicas=6 deployment.apps/server-deploy
 
 
 
