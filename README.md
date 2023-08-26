@@ -18,8 +18,18 @@ asuming
 NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/server-deploy   4/4     4            4           8m50s
 
-add 2 replicas
+remove 2 replicas  from 4  to 2
 kubectl scale --current-replicas=4 --replicas=2 deployment.apps/server-deploy
 
-remove 2 replicas
+add 2 replicas from 2 to 4
 kubectl scale --current-replicas=2 --replicas=4 deployment.apps/server-deploy
+
+ kubectl describe deployments server-deploy | grep desired | awk '{print $2}' | head -n1
+
+if the number of replicas is unknowen  and you want 6 replicas
+run the foloing command 
+  kubectl scale --current-replicas=$(kubectl describe deployments server-deploy | grep desired | awk '{print $2}' | head -n1) --replicas=6 deployment.app
+s/server-deploy
+
+
+
