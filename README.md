@@ -14,6 +14,9 @@
     USING ANSIBILE BUILD A CRON JOB IN JENKINS TO ADD 2 REPLICAS AT
     8:00 AND DELETE 2 REPLICAS AT 13:00
 
+
+https://docs.google.com/document/d/1KHsh9nSAY3sqSLTvKzfn2aR38yIFM7f6y2UxWNs9v24/edit?usp=sharing
+
 asuming 
 NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/server-deploy   4/4     4            4           8m50s
