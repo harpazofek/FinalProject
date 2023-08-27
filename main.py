@@ -9,7 +9,8 @@ app = Flask(__name__)
 def ping():
     if request.method == "GET":
         return f'<H2> Method GET, you have pinged successfuly   <br><br> Have a nice DAY and pong to you <H2> \
-                URL: {request.host_url}ping'  
+                URL: {request.host_url}ping \
+                from - Eli , Ofek , Lior , Daniel'  
         # {
         #     'message': 'This endpoint should return a list of entities' ,
         #     'method': request.method ,
