@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: ping-pong
-        image: ping-pong
+        image: ping-pong:latest
         resources:
         ports:
         - containerPort: 5005
