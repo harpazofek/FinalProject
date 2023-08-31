@@ -16,7 +16,7 @@ node (){
     }
 
     stage ('Build') { 
-        sh "docker build eli41/ping-pong:latest" . 
+        sh "docker build eli41/ping-pong:latest ."  
     }
 
  stage('Push image') {
