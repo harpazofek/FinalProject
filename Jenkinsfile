@@ -17,7 +17,7 @@ node (){
     }
 
     stage ('Build') { 
-        dockerImage = docker.build(eli41/ping-pong) .  
+        dockerImage = docker.build("eli41/ping-pong") 
     }
      
     stage('Push image') {
