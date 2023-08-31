@@ -24,7 +24,8 @@ node (){
     stage('Push_image') {
         withDockerRegistry([ credentialsId: "docker-hub", url: "" ]) {
         bat "docker push eli41/ping-pong:latest-${env.BRANCH_NAME}   "
-        }
+        }}
+        
     stage ('deploy') { 
         // sh "ssh -i ~/.ssh/id_rsa  eli@172.17.0.1 /home/eli/jenkins/restart_all.sh" 
         sh "kubectl apply -f ping-pong-deploy.yaml" 
