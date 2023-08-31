@@ -10,7 +10,7 @@ def ping():
     if request.method == "GET":
         return f'<H2> Method GET, you have pinged successfuly   <br><br> Have a nice DAY and pong to you <H2> \
                 URL: {request.host_url}ping \
-                <br><br> Project BY : Daniel, Eli, Ofek, Lior,'  
+                <br><br> Project BY : Daniel, Eli, Ofek, Lior'  
         # {
         #     'message': 'This endpoint should return a list of entities' ,
         #     'method': request.method ,
@@ -23,7 +23,8 @@ def ping():
 def pong():
     if request.method == "POST":
         return f'<H2> Method POST, you have pinged successfuly  <br><br> Have a nice DAY <H2> \
-               URL: {request.host_url}pong'  
+               URL: {request.host_url}pong \
+                <br><br> Project BY : Daniel, Eli, Ofek, Lior'  
 
 
 

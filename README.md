@@ -131,7 +131,5 @@ $ kubectl scale --current-replicas=$numRelicas --replicas=$newRelicasNum deploym
 
 
 
-Setup Ansible for Jenkins 
-https://plugins.jenkins.io/ansible
 
-
+minikube start --extra-config=apiserver.service-node-port-range=5000-40000
