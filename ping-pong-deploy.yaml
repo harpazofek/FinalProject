@@ -16,8 +16,7 @@ spec:
     spec:
       containers:
       - name: ping-pong
-        imagePullPolicy: Never 
-        image: eli41/ping-pong
+        image: eli41/ping-pong:latest
         resources:
         ports:
         - containerPort: 5005
