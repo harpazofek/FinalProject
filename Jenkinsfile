@@ -4,6 +4,7 @@ node (){
     def gitCommit = null;
     def hostfix = null;
     def release = null;
+    def dockerImage
     stage ('Checkout') {
       checkout scm
       sh 'env'
@@ -16,16 +17,15 @@ node (){
     }
 
     stage ('Build') { 
-        sh "docker build -t eli41/ping-pong:latest-${env.BRANCH_NAME} .  "
+        dockerImage = docker.build(eli41/ping-pong:latest) .  
     }
-    // stage ('push') { 
-    //     sh "docker push eli41/ping-pong:latest-${env.BRANCH_NAME}   "
-    // }
-    stage('Push_image') {
-        withDockerRegistry([ credentialsId: "docker-hub", url: "" ]) {
-        bat "docker push eli41/ping-pong:latest-${env.BRANCH_NAME}   "
-        }}
-        
+     
+    stage('Push image') {
+    docker.withRegistry('https://registry-1.docker.io/v2/', 'docker-hub-credentials') {
+      dockerImage.push()
+    }
+  }
+
     stage ('deploy') { 
         // sh "ssh -i ~/.ssh/id_rsa  eli@172.17.0.1 /home/eli/jenkins/restart_all.sh" 
         sh "kubectl apply -f ping-pong-deploy.yaml" 
