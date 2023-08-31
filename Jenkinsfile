@@ -4,7 +4,6 @@ node (){
     def gitCommit = null;
     def hostfix = null;
     def release = null;
-    def dockerImage
     stage ('Checkout') {
       checkout scm
       sh 'env'
@@ -17,14 +16,14 @@ node (){
     }
 
     stage ('Build') { 
-        dockerImage = docker.build("eli41/ping-pong:latest") 
+        sh "docker build eli41/ping-pong:latest" . 
     }
-     
-    stage('Push image') {
-    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub') {
-      dockerImage.push()
+
+ stage('Push image') {
+        withDockerRegistry([ credentialsId: "docker-hub", url: "" ]) {
+        bat "docker push eli41/ping-pong:latest"
+        }     
     }
-  }
 
     stage ('deploy') { 
         // sh "ssh -i ~/.ssh/id_rsa  eli@172.17.0.1 /home/eli/jenkins/restart_all.sh" 
