@@ -18,9 +18,9 @@ node (){
     stage ('Build') { 
         sh "docker build -t eli41/ping-pong:latest-${env.BRANCH_NAME} .  "
     }
-    stage ('push') { 
-        sh "docker push eli41/ping-pong:latest-${env.BRANCH_NAME}   "
-    }
+    // stage ('push') { 
+    //     sh "docker push eli41/ping-pong:latest-${env.BRANCH_NAME}   "
+    // }
     stage('Push_image') {
         withDockerRegistry([ credentialsId: "docker-hub", url: "" ]) {
         bat "docker push eli41/ping-pong:latest-${env.BRANCH_NAME}   "
