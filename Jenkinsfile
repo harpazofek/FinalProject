@@ -17,11 +17,11 @@ node (){
     }
 
     stage ('Build') { 
-        dockerImage = docker.build("eli41/ping-pong") 
+        dockerImage = docker.build("eli41/ping-pong:latest") 
     }
      
     stage('Push image') {
-    docker.withRegistry('https://registry-1.docker.io/v2/', 'docker-hub-credentials') {
+    docker.withRegistry('https://registry-1.docker.io/v2/', 'docker-hub') {
       dockerImage.push()
     }
   }
