@@ -20,7 +20,7 @@ node (){
     }
 
  stage('Push image') {
-        withDockerRegistry([ credentialsId: "docker-hub", url: "" ]) {
+        withDockerRegistry([ credentialsId: "docker_hub_cred", url: "" ]) {
         sh "docker push eli41/ping-pong:latest"
         }     
     }
