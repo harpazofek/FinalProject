@@ -19,15 +19,11 @@ node (){
         sh "docker build  -t eli41/ping-pong:latest ."  
     }
 
-docker.withRegistry("https://891381322558.dkr.ecr.us-east-1.amazonaws.com", "ecr:us-east-1:credential-id") {
-  docker.image("eli41/ping-pong:latest").push()
-}
-
-//  stage('Push image') {
-//         withDockerRegistry([ credentialsId: "docker-hub", url: "" ]) {
-//         bat "docker push eli41/ping-pong:latest"
-//         }     
-//     }
+ stage('Push image') {
+        withDockerRegistry([ credentialsId: "docker-hub", url: "" ]) {
+        sh "docker push eli41/ping-pong:latest"
+        }     
+    }
 
     stage ('deploy') { 
         // sh "ssh -i ~/.ssh/id_rsa  eli@172.17.0.1 /home/eli/jenkins/restart_all.sh" 
