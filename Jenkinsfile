@@ -36,7 +36,7 @@ node (){
         sh 'sleep 15'
       }
     }
-    
+
     stage ('expose to www') { 
         // sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
         echo "Minikube port-forward stage - test only"
@@ -51,7 +51,7 @@ node (){
                   namespace: 'default'
                   ]) {
         // Checking if minikube is running
-        def minikubeStatus = sh(script: 'minikube status --format={{.APIServer}}', returnStatus: true).trim()
+        def minikubeStatus = sh 'minikube status --format={{.APIServer}}'
         if (minikubeStatus == 'Running') {
           echo "Minikube is running. \nStarting Shutdown Process"
           sh 'minikube stop'
