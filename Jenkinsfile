@@ -1,10 +1,10 @@
 pipeline {
 
-    def version = null; 
-    def tag = null;
-    def gitCommit = null;
-    def hostfix = null;
-    def release = null;
+  def version = null; 
+  def tag = null;
+  def gitCommit = null;
+  def hostfix = null;
+  def release = null;
     
     stage ('Checkout') {
       checkout scm
