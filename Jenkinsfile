@@ -48,7 +48,7 @@ node (){
     //                 ]) {
       sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
       sh 'sleep 15'
-    }
+    // }
   }
 
     stage ('expose to www') { 
