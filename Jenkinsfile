@@ -1,4 +1,6 @@
-node (){
+pipeline {
+    agent any
+    
     def version = null; 
     def tag = null;
     def gitCommit = null;
