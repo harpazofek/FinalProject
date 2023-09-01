@@ -1,5 +1,4 @@
 pipeline (){
-
   def version = null; 
   def tag = null;
   def gitCommit = null;
