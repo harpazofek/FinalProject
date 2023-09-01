@@ -44,7 +44,13 @@ node (){
 //     }
  
  stage('K8s checkout') {
-  stage('Check and Stop Minikube') {
+    withKubeConfig([credentialsId: 'jenkins-kub2',
+                  // caCertificate: '<ca-certificate>',                    
+                  serverUrl: ' https://192.168.49.2:8443',
+                  //contextName: '<context-name>',
+                  clusterName: 'minikube',
+                  namespace: 'default'
+                  ]) {
     steps {
       script {
         // Checking if minikube is running
