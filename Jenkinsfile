@@ -4,7 +4,7 @@ node (){
     def gitCommit = null;
     def hostfix = null;
     def release = null;
-    def minikubeStatus = null;
+    def minikubeStatus = 'Running';
     def deployStatus = null;
     stage ('Checkout') {
       checkout scm
@@ -26,29 +26,17 @@ node (){
         }     
     }
 
-    stage('connect to minikube') {
-        withKubeConfig([credentialsId: 'jenkins-kub2',
+ stage('deploy image') {
+    withKubeConfig([credentialsId: 'jenkins-kub2',
                     // caCertificate: '<ca-certificate>',                    
                     serverUrl: ' https://192.168.49.2:8443',
                     //contextName: '<context-name>',
                     clusterName: 'minikube',
                     namespace: 'default'
                     ]) {
-        echo "connection to minikube with credentialsId: jenkins-kub2"              
-      } 
-    }
-
- stage('deploy image') {
-    // withKubeConfig([credentialsId: 'jenkins-kub2',
-    //                 // caCertificate: '<ca-certificate>',                    
-    //                 serverUrl: ' https://192.168.49.2:8443',
-    //                 //contextName: '<context-name>',
-    //                 clusterName: 'minikube',
-    //                 namespace: 'default'
-    //                 ]) {
       sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
       sh 'sleep 15'
-    // }
+    }
   }
 
     stage ('expose to www') { 
@@ -58,7 +46,7 @@ node (){
 
     stage('K8s checkout') {
         // Checking if minikube is running
-        // minikubeStatus = sh(returnStdout: true, script: 'minikube status --format={{.APIServer}}').trim()
+        minikubeStatus = sh(returnStdout: true, script: 'minikube status --format={{.APIServer}}')
         if (minikubeStatus == 'Running') {
           echo "Minikube is running. \nStarting Shutdown Process"
           sh 'minikube stop'
