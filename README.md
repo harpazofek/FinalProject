@@ -14,17 +14,6 @@
     USING ANSIBILE BUILD A CRON JOB IN JENKINS TO ADD 2 REPLICAS AT
     8:00 AND DELETE 2 REPLICAS AT 13:00
 
-<<<<<<< HEAD
-
-https://docs.google.com/document/d/1KHsh9nSAY3sqSLTvKzfn2aR38yIFM7f6y2UxWNs9v24/edit?usp=sharing
-
-asuming 
-NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/server-deploy   4/4     4            4           8m50s
-=======
->>>>>>> eli-brnch
-
-
 DevSecOps  Final Project (RED)
 
 BY : Daniel , Eli Levy , Ofek , Lior  
@@ -40,8 +29,28 @@ Configure the Jenkins jobs .
 Configure the Ansible to create the Cron jobs .
 
 
+Run the app:
+
+to run the svc : 
+minikube service ping-svc
+
+take the ip and port to the next command
+
+curl -X GET -H "Content-Type: application/json" -d '{"ping": "pong"}' http://localhost:5005/ping
 
 
+local test 
+python3 -m flask --app main run
+
+
+##### Enable the Ingress controller  ###
+minikube addons enable ingress
+#### Verify that the NGINX Ingress controller is running
+kubectl get pods -n ingress-nginx
+
+
+##### How to change the default nodeport range
+minikube start --extra-config=apiserver.service-node-port-range=5000-32000
 
 * Setup jenkins to work with Minikube  *
 
@@ -76,22 +85,6 @@ kubectl scale --current-replicas=4 --replicas=2 deployment.apps/server-deploy
 
 add 2 replicas from 2 to 4
 kubectl scale --current-replicas=2 --replicas=4 deployment.apps/server-deploy
-<<<<<<< HEAD
-
- kubectl describe deployments server-deploy | grep desired | awk '{print $2}' | head -n1
-
-if the number of replicas is unknowen  and you want 6 replicas
-run the foloing command 
-  kubectl scale --current-replicas=$(kubectl describe deployments server-deploy | grep desired | awk '{print $2}' | head -n1) --replicas=6 deployment.apps/server-deploy
-=======
-if the number of Podes is unknown  and you want 2 more Podes
-run the following command :
-Get the number of available podes  from the describe text:
-$ export numRelicas=$(kubectl describe deployments server-deploy | grep available | awk '{print $2}' | head -n1)
-$ export newRelicasNum=$(($numRelicas + 2))
-$ kubectl scale --current-replicas=$numRelicas --replicas=$newRelicasNum deployment.apps/server-deploy
->>>>>>> eli-brnch
-
 
 
 Jenkins jobs:
@@ -117,8 +110,6 @@ Execute shell:
 $ kubectl apply -f ping-pong-deploy.yaml 
 $ sleep 5
 $ kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 
-
-
 
 
 ** Add-2-replicas0800 **
