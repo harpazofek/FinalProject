@@ -51,7 +51,7 @@ node (){
                   clusterName: 'minikube',
                   namespace: 'default'
                   ]) {
-    steps {
+      steps {
       script {
         // Checking if minikube is running
         def minikubeStatus = sh(script: 'minikube status --format={{.APIServer}}', returnStatus: true).trim()
