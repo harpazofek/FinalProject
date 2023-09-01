@@ -25,7 +25,7 @@ node (){
         }     
     }
 
- stage('List pods') {
+ stage('Pull image') {
     withKubeConfig([credentialsId: 'jenkins-kub2',
                     // caCertificate: '<ca-certificate>',                    
                     serverUrl: ' https://192.168.49.2:8443',
@@ -34,17 +34,11 @@ node (){
                     namespace: 'default'
                     ]) {
       sh 'kubectl apply -f ping-pong-deploy.yaml'
-    //   sh 'kubectl apply -f ping-service.yml'
       sh 'sleep 15'
-      sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
     }
   }
 
-
-
-
-    // stage ('deploy') { 
-    //     // sh "ssh -i ~/.ssh/id_rsa  eli@172.17.0.1 /home/eli/jenkins/restart_all.sh" 
-    //     sh "kubectl apply -f ping-pong-deploy.yaml" 
-    // }
+stage ('expose to www') { 
+        sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
+    }
 }
