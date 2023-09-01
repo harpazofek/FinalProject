@@ -4,6 +4,8 @@ node (){
     def gitCommit = null;
     def hostfix = null;
     def release = null;
+    def minikubeStatus = null;
+    def deployStatus = null;
     stage ('Checkout') {
       checkout scm
       sh 'env'
@@ -54,9 +56,8 @@ node (){
 
     stage('K8s checkout') {
         // Checking if minikube is running
-        // def minikubeStatus = sh(script: 'minikube status --format={{.APIServer}}')
-        if [[ $(minikube status | grep 'minikube: Running') == 'minikube: Running' ]] {
-        // if (minikubeStatus == 'Running') {
+        minikubeStatus = sh(returnStdout: true, script: 'minikube status --format={{.APIServer}}') 
+        if (minikubeStatus == 'Running') {
           echo "Minikube is running. \nStarting Shutdown Process"
           sh 'minikube stop'
         } 
