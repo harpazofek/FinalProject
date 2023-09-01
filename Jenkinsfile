@@ -26,31 +26,33 @@ node (){
         }     
     }
 
-    // stage('connect to minikube') {
-    //     withKubeConfig([credentialsId: 'jenkins-kub2',
-    //                 // caCertificate: '<ca-certificate>',                    
-    //                 serverUrl: ' https://192.168.49.2:8443',
-    //                 //contextName: '<context-name>',
-    //                 clusterName: 'minikube',
-    //                 namespace: 'default'
-    //                 ]) 
-    // }
-
- stage('deploy image') {
-    withKubeConfig([credentialsId: 'jenkins-kub2',
+    stage('connect to minikube') {
+        withKubeConfig([credentialsId: 'jenkins-kub2',
                     // caCertificate: '<ca-certificate>',                    
                     serverUrl: ' https://192.168.49.2:8443',
                     //contextName: '<context-name>',
                     clusterName: 'minikube',
                     namespace: 'default'
                     ]) {
+        echo "connection to minikube with credentialsId: jenkins-kub2"              
+      } 
+    }
+
+ stage('deploy image') {
+    // withKubeConfig([credentialsId: 'jenkins-kub2',
+    //                 // caCertificate: '<ca-certificate>',                    
+    //                 serverUrl: ' https://192.168.49.2:8443',
+    //                 //contextName: '<context-name>',
+    //                 clusterName: 'minikube',
+    //                 namespace: 'default'
+    //                 ]) {
       sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
       sh 'sleep 15'
     }
   }
 
     stage ('expose to www') { 
-        // sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
+        sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
         echo "Minikube port-forward stage - test only"
     }
 
