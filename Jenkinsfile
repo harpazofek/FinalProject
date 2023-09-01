@@ -37,17 +37,9 @@ node (){
     }
 
     stage('deploy image') {
-        // withKubeConfig([credentialsId: 'jenkins-kub2',
-        //             // caCertificate: '<ca-certificate>',                    
-        //             serverUrl: ' https://192.168.49.2:8443',
-        //             //contextName: '<context-name>',
-        //             clusterName: 'minikube',
-        //             namespace: 'default'
-        //             ]) {
         sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
         sh 'sleep 15'
       }
-    }
 
     stage ('expose to www') { 
         // sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
@@ -56,7 +48,7 @@ node (){
 
     stage('K8s checkout') {
         // Checking if minikube is running
-        minikubeStatus = sh(returnStdout: true, script: 'minikube status --format={{.APIServer}}') 
+        // minikubeStatus = sh(returnStdout: true, script: 'minikube status --format={{.APIServer}}').trim()
         if (minikubeStatus == 'Running') {
           echo "Minikube is running. \nStarting Shutdown Process"
           sh 'minikube stop'
