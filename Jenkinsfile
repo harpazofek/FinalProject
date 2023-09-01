@@ -54,8 +54,9 @@ node (){
 
     stage('K8s checkout') {
         // Checking if minikube is running
-        def minikubeStatus = sh(script: 'minikube status --format={{.APIServer}}')
-        if (minikubeStatus == 'Running') {
+        // def minikubeStatus = sh(script: 'minikube status --format={{.APIServer}}')
+        if [[ $(minikube status | grep 'minikube: Running') == 'minikube: Running' ]] {
+        // if (minikubeStatus == 'Running') {
           echo "Minikube is running. \nStarting Shutdown Process"
           sh 'minikube stop'
         } 
