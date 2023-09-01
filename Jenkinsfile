@@ -15,7 +15,7 @@ node (){
 
     }    
     stage ('Build') { 
-        sh "docker build -t eli41/ping-pong:latest ./app."  
+        sh "docker build -t eli41/ping-pong:latest ./app ."  
     }
     stage('Push image') {
         withDockerRegistry([ credentialsId: "docker_hub_cred", url: "" ]) {
