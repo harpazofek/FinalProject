@@ -44,9 +44,8 @@ node (){
 //     }
 
  agent any 
- stage('K8s checkout') {
-  stage('Check and Stop Minikube') {
-    steps {
+ stage('K8s checkout') { 
+    steps('Check and Stop Minikube') {
       script {
         // Checking if minikube is running
         def minikubeStatus = sh(script: 'minikube status --format={{.APIServer}}', returnStatus: true).trim()
