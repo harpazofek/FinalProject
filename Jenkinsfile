@@ -24,14 +24,24 @@ node (){
         }     
     }
 
-    stage('deploy image') {
+    stage('connect to minikube') {
         withKubeConfig([credentialsId: 'jenkins-kub2',
                     // caCertificate: '<ca-certificate>',                    
                     serverUrl: ' https://192.168.49.2:8443',
                     //contextName: '<context-name>',
                     clusterName: 'minikube',
                     namespace: 'default'
-                    ]) {
+                    ]) 
+    }
+
+    stage('deploy image') {
+        // withKubeConfig([credentialsId: 'jenkins-kub2',
+        //             // caCertificate: '<ca-certificate>',                    
+        //             serverUrl: ' https://192.168.49.2:8443',
+        //             //contextName: '<context-name>',
+        //             clusterName: 'minikube',
+        //             namespace: 'default'
+        //             ]) {
         sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
         sh 'sleep 15'
       }
@@ -43,15 +53,8 @@ node (){
     }
 
     stage('K8s checkout') {
-      withKubeConfig([credentialsId: 'jenkins-kub2',
-                  // caCertificate: '<ca-certificate>',                    
-                  serverUrl: ' https://192.168.49.2:8443',
-                  //contextName: '<context-name>',
-                  clusterName: 'minikube',
-                  namespace: 'default'
-                  ]) {
         // Checking if minikube is running
-        def minikubeStatus = sh 'minikube status --format={{.APIServer}}'
+        def minikubeStatus = sh(script: 'minikube status --format={{.APIServer}}')
         if (minikubeStatus == 'Running') {
           echo "Minikube is running. \nStarting Shutdown Process"
           sh 'minikube stop'
@@ -59,6 +62,5 @@ node (){
         else {
           echo "Shutdown Process has ben Compleated minikube is not running"
         }
-        }
-  }
+    }
 }
