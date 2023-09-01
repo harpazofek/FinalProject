@@ -57,10 +57,10 @@ node (){
         def minikubeStatus = sh(script: 'minikube status --format={{.APIServer}}', returnStatus: true).trim()
 
         if (minikubeStatus == 'Running') {
-          echo "Minikube is running. \nStarting Shotdown Process"
+          echo "Minikube is running. \nStarting Shutdown Process"
           sh 'minikube stop'
           } else {
-            echo "Shotdown Process has ben Compleated minikube is not running"
+            echo "Shutdown Process has ben Compleated minikube is not running"
           }
         }
       }
