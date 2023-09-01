@@ -60,4 +60,10 @@ stage('K8s checkout') {
       }
     }
   }
+
+    post {
+        always {
+            // Cleanup or additional steps after the Minikube check
+        }
+    }
 }
