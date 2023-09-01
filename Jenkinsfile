@@ -39,22 +39,21 @@ node (){
     }
   }
 
-    stage ('expose to www') {
-    // withKubeConfig([credentialsId: 'jenkins-kub2',
-    //                 // caCertificate: '<ca-certificate>',                    
-    //                 serverUrl: ' https://192.168.49.2:8443',
-    //                 //contextName: '<context-name>',
-    //                 clusterName: 'minikube',
-    //                 namespace: 'default'
-    //                 ]) 
-      //  {
+  stage ('expose to www') {
+      withKubeConfig([credentialsId: 'jenkins-kub2',
+                    // caCertificate: '<ca-certificate>',                    
+                    serverUrl: ' https://192.168.49.2:8443',
+                    //contextName: '<context-name>',
+                    clusterName: 'minikube',
+                    namespace: 'default'
+                    ]) {
         // sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
         sh 'kubectl get all'
         echo "Minikube port-forward stage - test only"
-      // } 
-    }
+      } 
+  }
 
-    stage('K8s checkout') {
+  stage('K8s checkout') {
         // Checking if minikube is running
         minikubeStatus = sh(returnStdout: true, script: 'minikube status --format={{.APIServer}}')
         if (minikubeStatus == 'Running') {
@@ -64,5 +63,5 @@ node (){
         else {
           echo "Shutdown Process has ben Compleated minikube is not running"
         }
-    }
+  }
 }
