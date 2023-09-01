@@ -11,12 +11,6 @@ def ping():
         return f'<H2> Method GET, you have pinged successfuly   <br><br> Have a nice DAY and pong to you <H2> \
                 URL: {request.host_url}ping \
                 <br><br> Project BY : Daniel, Eli, Ofek, Lior'  
-        # {
-        #     'message': 'This endpoint should return a list of entities' ,
-        #     'method': request.method ,
-        #     'body': request.json ,
-        #     'path': request.path ,
-        #     'URL':  request.host_url 
 
 
 @app.route('/pong', methods=['POST'])
