@@ -34,7 +34,7 @@ node (){
                     clusterName: 'minikube',
                     namespace: 'default'
                     ]) {
-      sh 'kubectl apply -f ping-pong-deploy.yaml'
+      sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
       sh 'sleep 15'
     }
   }
