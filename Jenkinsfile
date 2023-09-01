@@ -42,10 +42,8 @@ node (){
 // stage ('expose to www') { 
 //         sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
 //     }
-pipeline {
-    agent any
-    
-stage('K8s checkout') {
+
+ stage('K8s checkout') {
   stage('Check and Stop Minikube') {
     steps {
       script {
