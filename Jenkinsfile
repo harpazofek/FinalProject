@@ -48,7 +48,7 @@ stage('K8s checkout') {
     steps {
       script {
         // Checking if minikube is running
-        def minikube = sh(script: 'minikube status --format={{.MinikubeStatus}}', returnStatus: true).trim()
+        def minikube = sh(script: 'minikube status --format={{.APIServer}}', returnStatus: true).trim()
 
         if (minikubeStatus == 'Running') {
           echo "Minikube is running. \nStarting Shotdown Process"
