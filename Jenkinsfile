@@ -43,12 +43,12 @@ node (){
 //         sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
 //     }
 
-stage {
+stage('K8s checkout') {
   stage('Check and Stop Minikube') {
     steps {
       script {
         // Checking if minikube is running
-        def minikube = sh(script: ' minikube status --format={{.MinikubeStatus}}', returnStatus: true).trim()
+        def minikube = sh(script: 'minikube status --format={{.MinikubeStatus}}', returnStatus: true).trim()
 
         if (minikubeStatus == 'Running') {
           echo "Minikube is running. \nStarting Shotdown Process"
