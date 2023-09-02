@@ -4,27 +4,27 @@ node (){
     def gitCommit = null;
     def hostfix = null;
     def release = null;
-    def minikubeStatus = 'Running';
+    def minikubeStatus = null;
     def deployStatus = null;
-    stage ('Checkout') {
-      checkout scm
-      sh 'env'
-      gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-      release = env.BRANCH_NAME ;
-      version = "${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
-      tag = "${release}.${env.BUILD_NUMBER}";
-      latest = "${env.BRANCH_NAME}-latest";
+    // stage ('Checkout') {
+    //   checkout scm
+    //   sh 'env'
+    //   gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+    //   release = env.BRANCH_NAME ;
+    //   version = "${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
+    //   tag = "${release}.${env.BUILD_NUMBER}";
+    //   latest = "${env.BRANCH_NAME}-latest";
 
-    }    
-    stage ('Build') { 
-        sh "docker build -t eli41/ping-pong:latest ./app"  
-    }
+    // }    
+    // stage ('Build') { 
+    //     sh "docker build -t eli41/ping-pong:latest ./app"  
+    // }
 
-    stage('Push image') {
-        withDockerRegistry([ credentialsId: "docker_hub_cred", url: "" ]) {
-        sh "docker push eli41/ping-pong:latest"
-        }     
-    }
+    // stage('Push image') {
+    //     withDockerRegistry([ credentialsId: "docker_hub_cred", url: "" ]) {
+    //     sh "docker push eli41/ping-pong:latest"
+    //     }     
+    // }
 
     stage('deploy to minikube') {
       withKubeConfig([credentialsId: 'jenkins-kub2',
@@ -34,7 +34,7 @@ node (){
                     clusterName: 'minikube',
                     namespace: 'default'
                     ]) { 
-         minikubeStatus = sh(returnStdout: true, script: 'minikube status --format={{.APIServer}}')
+         minikubeStatus = sh(returnStdout: true, script:  'minikube status --format={{.APIServer}}').trim()
          if (${minikubeStatus} == 'Running') {
            echo "Minikube is running. \n Deploying ping-pong : minikubeStatus = ${minikubeStatus}"  
            sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
