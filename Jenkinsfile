@@ -6,25 +6,25 @@ node (){
     def release = null;
     def minikubeStatus = null;
     def deployStatus = null;
-    stage ('Checkout') {
-      checkout scm
-      sh 'env'
-      gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-      release = env.BRANCH_NAME ;
-      version = "${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
-      tag = "${release}.${env.BUILD_NUMBER}";
-      latest = "${env.BRANCH_NAME}-latest";
+    // stage ('Checkout') {
+    //   checkout scm
+    //   sh 'env'
+    //   gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+    //   release = env.BRANCH_NAME ;
+    //   version = "${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
+    //   tag = "${release}.${env.BUILD_NUMBER}";
+    //   latest = "${env.BRANCH_NAME}-latest";
 
-    }    
-    stage ('Build') { 
-        sh "docker build -t eli41/ping-pong:latest ./app"  
-    }
+    // }    
+    // stage ('Build') { 
+    //     sh "docker build -t eli41/ping-pong:latest ./app"  
+    // }
 
-    stage('Push image') {
-        withDockerRegistry([ credentialsId: "docker_hub_cred", url: "" ]) {
-        sh "docker push eli41/ping-pong:latest"
-        }     
-    }
+    // stage('Push image') {
+    //     withDockerRegistry([ credentialsId: "docker_hub_cred", url: "" ]) {
+    //     sh "docker push eli41/ping-pong:latest"
+    //     }     
+    // }
 
     stage('deploy to minikube') {
       withKubeConfig([credentialsId: 'jenkins-kub2',
@@ -56,37 +56,36 @@ node (){
                     ]) {
               deployStatus = sh(returnStdout: true, script: ' kubectl get deploy server-deploy -o name').trim() 
              if (deployStatus == "deployment.apps/server-deploy") {
-               echo "ping-pong is Deployed . \n Minikube port-forward  , deployStatus = $deployStatus"  
-               sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
+               echo  "ping-pong is Deployed - deploy is = $deployStatus"
+               echo " *****  Minikube port-forward  ***** "  
+               sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
+              //  echo "Minikube port-forward stage - test only"
                sh 'sleep 15'
               } 
               else {
-                echo "minikube is not running , deployStatus = $deployStatus"
+                echo " !!!! ping-pong is NOT Deployed !!!, deployStatus = $deployStatus"
               }       
-
-        sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
-        echo "Minikube port-forward stage - test only"
       } 
     }
 
-    stage('stop minikube') {
-      withKubeConfig([credentialsId: 'jenkins-kub2',
-                    // caCertificate: '<ca-certificate>',                    
-                    serverUrl: ' https://192.168.49.2:8443',
-                    //contextName: '<context-name>',
-                    clusterName: 'minikube',
-                    namespace: 'default'
-                  ]) {
-        // Checking if minikube is running
-        minikubeStatus = sh(returnStdout: true, script: 'kubectl get node -n minikube -o name').trim() 
-        if (minikubeStatus == "node/minikube") {
-          echo "Minikube is running. \nStarting Shutdown Process minikubeStatus = " + $minikubeStatus
-          sh 'minikube stop'
-        } 
-        else {
-          echo "Shutdown Process has ben Compleated minikube is not running"
-        }
-    }
-  }
+  //   stage('stop minikube') {
+  //     withKubeConfig([credentialsId: 'jenkins-kub2',
+  //                   // caCertificate: '<ca-certificate>',                    
+  //                   serverUrl: ' https://192.168.49.2:8443',
+  //                   //contextName: '<context-name>',
+  //                   clusterName: 'minikube',
+  //                   namespace: 'default'
+  //                 ]) {
+  //       // Checking if minikube is running
+  //       minikubeStatus = sh(returnStdout: true, script: 'kubectl get node -n minikube -o name').trim() 
+  //       if (minikubeStatus == "node/minikube") {
+  //         echo "Minikube is running. \nStarting Shutdown Process minikubeStatus = " + $minikubeStatus
+  //         sh 'minikube stop'
+  //       } 
+  //       else {
+  //         echo "Shutdown Process has ben Compleated minikube is not running"
+  //       }
+  //   }
+  // }
 
 }
