@@ -4,8 +4,8 @@ node (){
     def gitCommit = null;
     def hostfix = null;
     def release = null;
-    def minikubeStatus = null;
-    def deployStatus = null;
+    def minikubeStatus = ' minikube floppp';
+    def deployStatus = 'big bose is falupen';
     // stage ('Checkout') {
     //   checkout scm
     //   sh 'env'
@@ -36,7 +36,8 @@ node (){
                     ]) { 
               minikubeStatus = sh(returnStdout: true, script: 'kubectl get node -n minikube -o name').trim() 
              if (minikubeStatus == "node/minikube") {
-               echo "Minikube is running. \n Deploying ping-pong  , minikubeStatus = $minikubeStatus"  
+               echo "* Minikube is running.  minikub node is = $minikubeStatus *"
+               echo "\n **** Deploying ping-pong ******"  
                sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
                sh 'sleep 15'
               } 
@@ -56,14 +57,14 @@ node (){
                     ]) {
               deployStatus = sh(returnStdout: true, script: ' kubectl get deploy server-deploy -o name').trim() 
              if (deployStatus == "deployment.apps/server-deploy") {
-               echo  "ping-pong is Deployed - deploy is = $deployStatus"
+               echo  "* ping-pong is Deployed - deploy is = $deployStatus *"
                echo " *****  Minikube port-forward  ***** "  
                sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
               //  echo "Minikube port-forward stage - test only"
                sh 'sleep 15'
               } 
               else {
-                echo " !!!! ping-pong is NOT Deployed !!!, deployStatus = $deployStatus"
+                echo " !!!! ping-pong is NOT Deployed !!!, deployment is  = $deployStatus"
               }       
       } 
     }
