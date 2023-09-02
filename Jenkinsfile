@@ -6,25 +6,25 @@ node (){
     def release = null;
     def minikubeStatus = null;
     def deployStatus = null;
-    // stage ('Checkout') {
-    //   checkout scm
-    //   sh 'env'
-    //   gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-    //   release = env.BRANCH_NAME ;
-    //   version = "${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
-    //   tag = "${release}.${env.BUILD_NUMBER}";
-    //   latest = "${env.BRANCH_NAME}-latest";
+    stage ('Checkout') {
+      checkout scm
+      sh 'env'
+      gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+      release = env.BRANCH_NAME ;
+      version = "${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
+      tag = "${release}.${env.BUILD_NUMBER}";
+      latest = "${env.BRANCH_NAME}-latest";
 
-    // }    
-    // stage ('Build') { 
-    //     sh "docker build -t eli41/ping-pong:latest ./app"  
-    // }
+    }    
+    stage ('Build') { 
+        sh "docker build -t eli41/ping-pong:latest ./app"  
+    }
 
-    // stage('Push image') {
-    //     withDockerRegistry([ credentialsId: "docker_hub_cred", url: "" ]) {
-    //     sh "docker push eli41/ping-pong:latest"
-    //     }     
-    // }
+    stage('Push image') {
+        withDockerRegistry([ credentialsId: "docker_hub_cred", url: "" ]) {
+        sh "docker push eli41/ping-pong:latest"
+        }     
+    }
 
     stage('deploy to minikube') {
       withKubeConfig([credentialsId: 'jenkins-kub2',
@@ -54,8 +54,8 @@ node (){
                     clusterName: 'minikube',
                     namespace: 'default'
                     ]) {
-              deployStatus = sh(returnStdout: true, script: 'kubectl get deploy -n server-deploy -o name').trim() 
-             if (deployStatus == "server-deploy") {
+              deployStatus = sh(returnStdout: true, script: ' kubectl get deploy server-deploy -o name').trim() 
+             if (deployStatus == "deployment.apps/server-deploy") {
                echo "ping-pong is Deployed . \n Minikube port-forward  , deployStatus = $deployStatus"  
                sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
                sh 'sleep 15'
@@ -64,7 +64,7 @@ node (){
                 echo "minikube is not running , deployStatus = $deployStatus"
               }       
 
-        // sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
+        sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
         echo "Minikube port-forward stage - test only"
       } 
     }
