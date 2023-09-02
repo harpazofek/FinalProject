@@ -34,8 +34,15 @@ node (){
                     clusterName: 'minikube',
                     namespace: 'default'
                     ]) { 
-      sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
-      sh 'sleep 15'
+         minikubeStatus = sh(returnStdout: true, script: 'minikube status --format={{.APIServer}}')
+         if (${minikubeStatus} == 'Running') {
+           echo "Minikube is running. \n Deploying ping-pong : minikubeStatus = ${minikubeStatus}"  
+           sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
+           sh 'sleep 15'
+         } 
+         else {
+           echo "minikube is not running"
+         }      
       }
     }
 
@@ -48,12 +55,11 @@ node (){
                     namespace: 'default'
                     ]) {
         // sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
-        sh 'kubectl get all'
         echo "Minikube port-forward stage - test only"
       } 
     }
 
-    stage('K8s checkout') {
+    stage('stop minikube') {
       withKubeConfig([credentialsId: 'jenkins-kub2',
                     // caCertificate: '<ca-certificate>',                    
                     serverUrl: ' https://192.168.49.2:8443',
@@ -64,7 +70,7 @@ node (){
         // Checking if minikube is running
         minikubeStatus = sh(returnStdout: true, script: 'minikube status --format={{.APIServer}}')
         if (minikubeStatus == 'Running') {
-          echo "Minikube is running. \nStarting Shutdown Process"
+          echo "Minikube is running. \nStarting Shutdown Process minikubeStatus = " + $minikubeStatus
           sh 'minikube stop'
         } 
         else {
