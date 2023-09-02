@@ -4,7 +4,7 @@ node (){
     def gitCommit = null;
     def hostfix = null;
     def release = null;
-    def minikubeStatus = ' minikube floppp';
+    def minikubeStatus = 'floppp';
     def deployStatus = 'big bose is falupen';
     // stage ('Checkout') {
     //   checkout scm
@@ -56,7 +56,7 @@ node (){
                     namespace: 'default'
                     ]) {
               deployStatus = sh(returnStdout: true, script: ' kubectl get deploy server-deploy -o name').trim() 
-             if (deployStatus == "deployment.apps/server-deploy") {
+             if (deployStatus == "deployment.apps/server-deploy1") {
                echo  "* ping-pong is Deployed - deploy is = $deployStatus *"
                echo " *****  Minikube port-forward  ***** "  
                sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
