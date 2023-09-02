@@ -4,7 +4,7 @@ node (){
     def gitCommit = null;
     def hostfix = null;
     def release = null;
-    def minikubeStatus = null;
+    def minikubeStatus = 'Running';
     def deployStatus = null;
     // stage ('Checkout') {
     //   checkout scm
@@ -34,6 +34,7 @@ node (){
                     clusterName: 'minikube',
                     namespace: 'default'
                     ]) { 
+         echo "Minikube is running. \n Deploying ping-pong : minikubeStatus = ${minikubeStatus}"                        
          minikubeStatus = sh(returnStdout: true, script:  'minikube status --format={{.APIServer}}').trim()
          if (${minikubeStatus} == 'Running') {
            echo "Minikube is running. \n Deploying ping-pong : minikubeStatus = ${minikubeStatus}"  
