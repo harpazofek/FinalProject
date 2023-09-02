@@ -7,6 +7,6 @@ spec:
   selector:
     app: ping-pong
   ports:
-  - port: 4000
-    targetPort: 5005
-    nodePort: 5005
+    - port: 5005
+      targetPort: 5005
+      nodePort: 30005
