@@ -38,7 +38,7 @@ node (){
              if (minikubeStatus == "node/minikube") {
                echo "* Minikube is running.  minikub node is = $minikubeStatus *"
                echo "\n **** Deploying ping-pong ******"  
-               sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml,ping-service.yml'
+               sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml,./K8S/ping-service.yml'
                sh 'sleep 20'
               } 
               else {
