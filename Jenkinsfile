@@ -35,7 +35,7 @@ node (){
                     namespace: 'default'
                     ]) { 
         //  minikubeStatus = sh(returnStdout: true, script: 'minikube status -f={{.APIServer}}').trim()
-         if (${minikubeStatus} == 'Running') {
+         if (minikubeStatus == 'Running') {
            echo "Minikube is running. \n Deploying ping-pong : minikubeStatus = ${minikubeStatus}"  
            sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
            sh 'sleep 15'
