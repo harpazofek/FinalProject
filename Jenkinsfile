@@ -4,7 +4,7 @@ node (){
     def gitCommit = null;
     def hostfix = null;
     def release = null;
-    def minikubeStatus = 'Running';
+    def minikubeStatus = 'Running kube';
     def deployStatus = null;
     // stage ('Checkout') {
     //   checkout scm
@@ -34,7 +34,7 @@ node (){
                     clusterName: 'minikube',
                     namespace: 'default'
                     ]) { 
-         script{ minikubeStatus=sh(script: 'minikube status --format={{.APIServer}}'), returnStdout: true ).trim()
+         script{ minikubeStatus=sh(script: 'minikube status --format="{{.APIServer}}"'), returnStdout: true ).trim()
           if (minikubeStatus == 'Running') {
             echo "Minikube is running. \n Deploying ping-pong : minikubeStatus = ${minikubeStatus}"  
             sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
