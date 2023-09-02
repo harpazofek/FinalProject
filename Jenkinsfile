@@ -4,7 +4,7 @@ node (){
     def gitCommit = null;
     def hostfix = null;
     def release = null;
-    def minikubeStatus = 'Running kube';
+    def minikubeStatus = null;
     def deployStatus = null;
     // stage ('Checkout') {
     //   checkout scm
@@ -35,14 +35,13 @@ node (){
                     namespace: 'default'
                     ]) { 
               minikubeStatus = sh(returnStdout: true, script: 'kubectl get node -n minikube -o name').trim() 
-            //  minikubeStatus = sh(returnStdout: true, script: 'minikube status --format="{{.APIServer}}"').trim() 
              if (minikubeStatus == "node/minikube") {
-               echo "Minikube is running. \n Deploying ping-pong"  
+               echo "Minikube is running. \n Deploying ping-pong  , minikubeStatus = $minikubeStatus"  
                sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
                sh 'sleep 15'
               } 
               else {
-                echo "minikube is not running"
+                echo "minikube is not running , minikubeStatus = $minikubeStatus"
               }       
       }
     }
@@ -55,6 +54,16 @@ node (){
                     clusterName: 'minikube',
                     namespace: 'default'
                     ]) {
+              deployStatus = sh(returnStdout: true, script: 'kubectl get deploy -n server-deploy -o name').trim() 
+             if (deployStatus == "server-deploy") {
+               echo "ping-pong is Deployed . \n Minikube port-forward  , deployStatus = $deployStatus"  
+               sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
+               sh 'sleep 15'
+              } 
+              else {
+                echo "minikube is not running , deployStatus = $deployStatus"
+              }       
+
         // sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
         echo "Minikube port-forward stage - test only"
       } 
@@ -69,8 +78,8 @@ node (){
                     namespace: 'default'
                   ]) {
         // Checking if minikube is running
-        minikubeStatus = sh(returnStdout: true, script: 'minikube status --format={{.APIServer}}')
-        if (minikubeStatus == 'Running') {
+        minikubeStatus = sh(returnStdout: true, script: 'kubectl get node -n minikube -o name').trim() 
+        if (minikubeStatus == "node/minikube") {
           echo "Minikube is running. \nStarting Shutdown Process minikubeStatus = " + $minikubeStatus
           sh 'minikube stop'
         } 
