@@ -34,10 +34,9 @@ node (){
                     clusterName: 'minikube',
                     namespace: 'default'
                     ]) { 
-           sh 'minikube status'           
-           script 
-           { 
-             minikubeStatus=sh(script: 'minikube status --format="{{.APIServer}}"' , returnStdout: true ).trim() 
+          //  script 
+          //  { 
+             minikubeStatus = sh(returnStdout: true, script: 'minikube status --format="{{.APIServer}}"').trim() 
              echo "Minikube is running. \n Deploying ping-pong : minikubeStatus = ${minikubeStatus}"  
              if (${minikubeStatus} == 'Running') {
                echo "Minikube is running. \n Deploying ping-pong : minikubeStatus = ${minikubeStatus}"  
@@ -47,7 +46,7 @@ node (){
               else {
                 echo "minikube is not running"
               }       
-          } 
+          // } 
       }
     }
 
