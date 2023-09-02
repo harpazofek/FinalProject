@@ -34,8 +34,7 @@ node (){
                     clusterName: 'minikube',
                     namespace: 'default'
                     ]) { 
-          //  script 
-          //  { 
+             sh 'kubectl get all'               
              minikubeStatus = sh(returnStdout: true, script: 'minikube status --format="{{.APIServer}}"').trim() 
              echo "Minikube is running. \n Deploying ping-pong : minikubeStatus = ${minikubeStatus}"  
              if (${minikubeStatus} == 'Running') {
@@ -46,7 +45,6 @@ node (){
               else {
                 echo "minikube is not running"
               }       
-          // } 
       }
     }
 
