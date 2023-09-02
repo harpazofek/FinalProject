@@ -36,7 +36,7 @@ node (){
                     ]) { 
            script 
            { 
-             minikubeStatus=sh(script: 'minikube status --format="{{.APIServer}}"' , returnStdout: true ).trim() }
+             minikubeStatus=sh(script: 'minikube status --format="{{.APIServer}}"' , returnStdout: true ).trim() 
              echo "Minikube is running. \n Deploying ping-pong : minikubeStatus = ${minikubeStatus}"  
             //  if (${minikubeStatus} == 'Running') {
             //    echo "Minikube is running. \n Deploying ping-pong : minikubeStatus = ${minikubeStatus}"  
