@@ -30,4 +30,4 @@
             name: server-deploy
           spec:
             replicas: 2  # Adjust the desired number of replicas for scaling down
-      when: current_time.stdout == "21:28"
+      when: current_time.stdout == "18:29"
