@@ -28,7 +28,7 @@
           kind: Deployment
           metadata:
             name: server-deploy
-            namespace: ansible-deployment
+            namespace: default
           spec:
             replicas: 2  # Adjust the desired number of replicas for scaling down
       when: current_time.stdout >= "18:40"
