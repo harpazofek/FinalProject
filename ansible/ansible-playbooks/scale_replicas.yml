@@ -1,11 +1,4 @@
 ---
-- name: install pre-requisites
-  tasks:
-    name:
-      - openshift
-      - pyyaml
-      - kubernetes
-
 - name: Scale Up/Down Replicas in Minikube
   hosts: localhost
   gather_facts: no
@@ -25,7 +18,7 @@
             name: server-deploy
           spec:
             replicas: 5  # Adjust the desired number of replicas for scaling up
-      when: current_time.stdout <= "08:00"
+      when: current_time.stdout == "08:00"
 
     - name: Scale down replicas at 13:00
       k8s:
@@ -37,4 +30,4 @@
             name: server-deploy
           spec:
             replicas: 2  # Adjust the desired number of replicas for scaling down
-      when: current_time.stdout == "18:32"
+      when: current_time.stdout >= "18:32"
