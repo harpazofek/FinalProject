@@ -21,44 +21,20 @@ BY : Daniel , Eli Levy , Ofek , Lior
 
 Prerequisite:
 
- Launch EC2 instance - t2.medium ,2 cpu ,volume 30GB - os  linux (ubuntu server 20.04) .
+Launch EC2 instance - t2.medium ,2 cpu ,volume 30GB - os  linux (ubuntu server 20.04) .
 Install : Docker , Minikube, Jenkins , Ansible , Git .
 In Jenkins install the kubernetes plugin .
 Edit the ~/.kube/config file (explained below) .
 Configure the Jenkins jobs .
 Configure the Ansible to create the Cron jobs .
 
-
-Run the app:
-
-to run the svc : 
-minikube service ping-svc
-
-take the ip and port to the next command
-
-curl -X GET -H "Content-Type: application/json" -d '{"ping": "pong"}' http://localhost:5005/ping
-
-
-local test 
-python3 -m flask --app main run
-
-
-##### Enable the Ingress controller  ###
-minikube addons enable ingress
-#### Verify that the NGINX Ingress controller is running
-kubectl get pods -n ingress-nginx
-
-
-##### How to change the default nodeport range
-minikube start --extra-config=apiserver.service-node-port-range=5000-32000
-
 * Setup jenkins to work with Minikube  *
 
  * setup the kube config file *
-cd ~/.kube  
-Nano config 
+      cd ~/.kube  
+      Nano config 
 
-In the file :
+Config File:
 
 Replace  in the lines     certificate-authority:  ,  client-certificate  , certificate-authority:
 add -date  like so  certificate-authority-data:
@@ -92,13 +68,14 @@ Jenkins jobs:
  Source Code Management - git
  Repository URL:  https://github.com/harpazofek/FinalProject
  Branch Specifier (blank for 'any')=*/main
-Build Steps - Execute shell : $ git status  $git switch main $docker build -t eli/ping-pong .
+ Build Steps - Execute shell : $ git status  $git switch main $docker build -t eli/ping-pong .
 
 
 **  deploy-ping-pong  **
 Source Code Management : 
 Git Repository URL = https://github.com/harpazofek/FinalProject
-Branches to build = */main
+To deploy the app we are using a cron job to build and push the latests to the claud
+
 
 Build Environment:
 Credentials = the config file defined above
@@ -107,10 +84,8 @@ Cluster name = minikube
 Namespace = default
 Build Steps:
 Execute shell:
-$ kubectl apply -f ping-pong-deploy.yaml 
+$ kubectl apply -f ./K8S/*   # You can change it to any file name inside the dir.
 $ sleep 5
-$ kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 
-
 
 ** Add-2-replicas0800 **
 

@@ -26,7 +26,7 @@ node (){
         }     
     }
 
-    stage('deploy to minikube') {
+    stage('Deploy to Minikube') {
       withKubeConfig([credentialsId: 'jenkins-kub2',
                     // caCertificate: '<ca-certificate>',                    
                     serverUrl: ' https://192.168.49.2:8443',
