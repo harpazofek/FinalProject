@@ -27,7 +27,7 @@
           apiVersion: apps/v1
           kind: Deployment
           metadata:
-            name: server-deploy
+            name: deployment.apps/server-deploy
             labels:
               app: ping-pong
           spec:
