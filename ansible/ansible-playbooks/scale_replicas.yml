@@ -27,9 +27,8 @@
           apiVersion: apps/v1
           kind: Deployment
           metadata:
-            name: deployment.apps/server-deploy
-            labels:
-              app: ping-pong
+            name: server-deploy
+            namespace: ansible-deployment
           spec:
             replicas: 2  # Adjust the desired number of replicas for scaling down
       when: current_time.stdout >= "18:40"
