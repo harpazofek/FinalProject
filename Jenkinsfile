@@ -1,10 +1,11 @@
 node (){
-  def version = null; 
-  def tag = null;
-  def gitCommit = null;
-  def hostfix = null;
-  def release = null;
-    
+    def version = null; 
+    def tag = null;
+    def gitCommit = null;
+    def hostfix = null;
+    def release = null;
+    def minikubeStatus = 'floppp';
+    def deployStatus = 'big bose is falupen';
     stage ('Checkout') {
       checkout scm
       sh 'env'
@@ -14,62 +15,35 @@ node (){
       tag = "${release}.${env.BUILD_NUMBER}";
       latest = "${env.BRANCH_NAME}-latest";
 
-    }
-
+    }    
     stage ('Build') { 
-        sh "docker build  -t eli41/ping-pong:latest ./app"  
+        sh "docker build -t eli41/ping-pong:latest ./app"  
     }
 
- stage('Push image') {
+    stage('Push image') {
         withDockerRegistry([ credentialsId: "docker_hub_cred", url: "" ]) {
         sh "docker push eli41/ping-pong:latest"
         }     
     }
 
- stage('Pull image') {
-    withKubeConfig([credentialsId: 'jenkins-kub2',
+    stage('deploy to minikube') {
+      withKubeConfig([credentialsId: 'jenkins-kub2',
                     // caCertificate: '<ca-certificate>',                    
                     serverUrl: ' https://192.168.49.2:8443',
                     //contextName: '<context-name>',
                     clusterName: 'minikube',
                     namespace: 'default'
-                    ]) {
-      sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml'
-      sh 'sleep 15'
-    }
-  }
-
-// stage ('expose to www') { 
-//         sh 'kubectl port-forward --address 0.0.0.0 deployment.apps/server-deploy 5005:5005 '
-//     }
- 
- stage('K8s checkout') {
-    withKubeConfig([credentialsId: 'jenkins-kub2',
-                  // caCertificate: '<ca-certificate>',                    
-                  serverUrl: ' https://192.168.49.2:8443',
-                  //contextName: '<context-name>',
-                  clusterName: 'minikube',
-                  namespace: 'default'
-                  ]) {
-      steps {
-      script {
-        // Checking if minikube is running
-        def minikubeStatus = sh(script: 'minikube status --format={{.APIServer}}', returnStatus: true).trim()
-
-        if (minikubeStatus == 'Running') {
-          echo "Minikube is running. \nStarting Shutdown Process"
-          sh 'minikube stop'
-          } else {
-            echo "Shutdown Process has ben Compleated minikube is not running"
-          }
-        }
+                    ]) { 
+              minikubeStatus = sh(returnStdout: true, script: 'kubectl get node -n minikube -o name').trim() 
+             if (minikubeStatus == "node/minikube") {
+               echo "* Minikube is running.  minikub node is = $minikubeStatus *"
+               echo "\n **** Deploying ping-pong ******"  
+               sh 'kubectl apply -f ./K8S/ping-pong-deploy.yaml,./K8S/ping-service.yml'
+               sh 'sleep 20'
+              } 
+              else {
+                echo "minikube is not running , minikubeStatus = $minikubeStatus"
+              }       
       }
-    }
-  }
-
-    post {
-        always {
-            // Cleanup or additional steps after the Minikube check
-        }
     }
 }
