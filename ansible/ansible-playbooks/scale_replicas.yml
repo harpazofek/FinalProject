@@ -18,7 +18,7 @@
             name: my-deployment
           spec:
             replicas: 5  # Adjust the desired number of replicas for scaling up
-      when: current_time.stdout == "08:00"
+      when: current_time.stdout <= "08:00"
 
     - name: Scale down replicas at 13:00
       k8s:
@@ -30,4 +30,4 @@
             name: my-deployment
           spec:
             replicas: 2  # Adjust the desired number of replicas for scaling down
-      when: current_time.stdout == "13:00"
+      when: current_time.stdout >= "13:00"

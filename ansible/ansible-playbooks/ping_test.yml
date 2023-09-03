@@ -1,6 +1,6 @@
 ---
 - name: Test Host Reachability
-  hosts: all
+  hosts: localhost
   tasks:
     - name: Ping hosts
       ping:
