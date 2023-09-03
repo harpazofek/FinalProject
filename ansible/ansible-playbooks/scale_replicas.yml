@@ -1,6 +1,6 @@
 ---
 - name: install pre-requisites
-  pip:
+  tasks:
     name:
       - openshift
       - pyyaml
