@@ -15,7 +15,7 @@
           apiVersion: apps/v1
           kind: Deployment
           metadata:
-            name: my-deployment
+            name: server-deploy
           spec:
             replicas: 5  # Adjust the desired number of replicas for scaling up
       when: current_time.stdout <= "08:00"
@@ -27,7 +27,7 @@
           apiVersion: apps/v1
           kind: Deployment
           metadata:
-            name: my-deployment
+            name: server-deploy
           spec:
             replicas: 2  # Adjust the desired number of replicas for scaling down
       when: current_time.stdout >= "13:00"
