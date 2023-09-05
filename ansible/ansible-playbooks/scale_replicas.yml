@@ -31,4 +31,4 @@
             namespace: default
           spec:
             replicas: 2  # Adjust the desired number of replicas for scaling down
-      when: current_time.stdout >= "18:40"
+      when: current_time.stdout >= "13:00"
