@@ -33,6 +33,9 @@ Configure the Ansible to create the Cron jobs .
  * setup the kube config file *
       cd ~/.kube  
       Nano config 
+Presentation:
+https://docs.google.com/presentation/d/1MDQYuNCN6X-G2nUq_HQn7s7g8NwcqyNE
+
 
 Config File:
 
