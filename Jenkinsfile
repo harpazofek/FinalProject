@@ -36,7 +36,7 @@ node (){
                     ]) { 
               minikubeStatus = sh(returnStdout: true, script: 'kubectl get node -n minikube -o name').trim() 
              if (minikubeStatus == "node/minikube") {
-               echo "* Minikube is running.  minikub node is = $minikubeStatus *"
+               echo "* Minikube is Running.  minikub node is = $minikubeStatus *"
                echo "\n **** Deploying ping-pong ******"  
                sh 'kubectl apply -f ./K8S/*.yml'
                sh 'sleep 20'
