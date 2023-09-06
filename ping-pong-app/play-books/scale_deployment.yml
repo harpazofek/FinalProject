@@ -1,4 +1,0 @@
-ansible.builtin.replace:
-  path: ~/FinalProject/beck-end/k8s-conf/client-deployment.yml
-  regexp: 'replicas:\s*2'
-  replace: 'replicas:\s*4'
